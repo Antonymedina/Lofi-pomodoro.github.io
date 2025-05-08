@@ -3,13 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lofi Pomodoro - Boost Your Productivity with Lofi Music and Focus Timer</title>
-  <meta name="description" content="Stay productive with Lofi Pomodoro. Combine the Pomodoro technique with relaxing lofi music and an aesthetically pleasing interface. Perfect for students, freelancers, and remote workers.">
+  <title>Lofi Pomodoro Timer: Relaxing Music for Ultimate Focus</title>
+  <meta name="description" content="Boost your focus and productivity with the Lofi Pomodoro Timer. Enjoy relaxing lofi music, a customizable timer, and a beautiful interface designed for ultimate concentration. Ideal for students, freelancers, and remote workers.">
   <meta name="keywords" content="Pomodoro timer, lofi music, productivity app, focus tool, time management">
   <meta name="author" content="Antony C. Medina">
   <link rel="stylesheet" href="styles.css">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@900&family=Inter:wght@500;700&display=swap" rel="stylesheet">
   <link rel="canonical" href="https://www.lofipomodoro.com/">
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Lofi Pomodoro",
+      "url": "https://www.lofipomodoro.com/"
+    }
+    </script>
+
+
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <script type="application/ld+json">
@@ -77,13 +87,17 @@
 </head>
 <body>
   <div class="container">
-    <header>
-      <img src="assets/logo.png" alt="Lofi Pomodoro Logo" class="logo">
-      <ul class="pomodoro-list">
-        <li class="live">Focus</li>
-        <li class="coming">Pause</li>
-        <li class="coming">Focus</li>
-        <li class="coming">Pause</li>
+    <header> <img src="assets/logo.png" alt="Lofi Pomodoro Logo" class="logo">
+      <h1>Lofi Pomodoro</h1>
+    </header>
+    <p>Lofi Pomodoro is a web application that combines the Pomodoro technique with relaxing lofi music to help you stay focused and productive. It features a customizable timer, an aesthetically pleasing interface, and various lofi music tracks to choose from, making it the perfect companion for students, freelancers, and remote workers.</p>
+    <nav>
+      <h2 class="sr-only">Timer</h2>
+      <ul class="pomodoro-list" >
+        <li class="live" role="listitem" aria-label="Focus">Focus</li>
+        <li class="coming" role="listitem" aria-label="Pause">Pause</li>
+        <li class="coming" role="listitem" aria-label="Focus">Focus</li>
+        <li class="coming" role="listitem" aria-label="Pause">Pause</li>
         <li class="coming">Focus</li>
         <li class="coming">Pause</li>
         <li class="coming">Focus</li>
@@ -93,8 +107,8 @@
     <main>
       <div class="timer">
         <div class="countdown">
-          <div class="time-section minutes">
-            <div class="digit" id="minute-tens"><span>2</span></div>
+          <div class="time-section minutes" id="timer" role="timer">
+            <div class="digit" id="minute-tens" ><span>2</span></div>
             <div class="digit" id="minute-units"><span>5</span></div>
           </div>
           <div class="colon">:</div>
@@ -104,23 +118,24 @@
           </div>
         </div>
         <div class="controls">
-          <button id="start-btn" class="button button-primary">Start</button>
-          <button id="reset-btn" class="button button-secondary">Reset</button>
+          <button id="start-btn" class="button button-primary" role="button" aria-label="Start" tabindex="0">Start</button>
+          <button id="reset-btn" class="button button-secondary" role="button" aria-label="Pause" tabindex="0">Reset</button>
+        
         </div>
       </div>
     </main>
     <footer>
       <div class="footer-controls">
-        <div class="left-controls">
+        <div class="left-controls" role="button" aria-label="Long Pause" tabindex="0">
           <button id="music-btn" class="music-control">
             <span id="song-status">Song paused</span>
-            <img id="music-icon" class="music-icon" src="assets/Play-focus.png" alt="Music Control">
+            <img id="music-icon" class="music-icon" src="assets/Play-focus.png" alt="Music Control" >
           </button>
         </div>
         <div class="right-controls">
           <button id="fullscreen-btn" class="fullscreen-control">
-            <span id="fullscreen-status">Full Screen</span>
-            <img id="fullscreen-icon" class="fullscreen-icon" src="assets/Full-screen-focus.png" alt="Full Screen">
+            <span id="fullscreen-status" role="button" aria-label="Full screen" tabindex="0">Full Screen</span>
+            <img id="fullscreen-icon" class="fullscreen-icon" src="assets/Full-screen-focus.png" alt="Full Screen" >
           </button>
         </div>
       </div>

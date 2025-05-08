@@ -1,6 +1,4 @@
 User-agent: *
-Disallow: /private/ # Carpeta de archivos privados (si tienes una)
-Disallow: /temp/    # Carpetas temporales
 Allow: /
 
 Sitemap: https://www.lofipomodoro.com/sitemap.xml
