@@ -98,6 +98,23 @@
       </nav>
     </header>
     <main>
+      <section class="mood-panel" aria-label="Focus mood">
+        <div class="mood-label">Focus mood</div>
+        <div class="mood-options" role="group" aria-label="Select focus mode">
+          <button class="mood-option active" data-mood="classic" aria-pressed="true">
+            <span aria-hidden="true">😊</span>
+            <span class="mood-name">Classic</span>
+          </button>
+          <button class="mood-option" data-mood="productive" aria-pressed="false">
+            <span aria-hidden="true">🧠</span>
+            <span class="mood-name">Productive</span>
+          </button>
+          <button class="mood-option" data-mood="beast" aria-pressed="false">
+            <span aria-hidden="true">🔥</span>
+            <span class="mood-name">Beast</span>
+          </button>
+        </div>
+      </section>
       <div class="timer">
         <div class="countdown" role="timer" aria-live="polite">
           <div class="time-section minutes">
