@@ -6,7 +6,7 @@ const moodPresets = {
 
 let currentPresetKey = 'classic';
 let countdownInterval;
-let timeLeft = moodPresets[currentPresetKey].focus * 60; // 25 minutos
+let timeLeft = 25 * 60; // 25 minutos
 let countdownEndTime = null;
 let pomodoroIndex = 0;
 let shuffledSongs = [];
