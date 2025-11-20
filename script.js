@@ -1,5 +1,6 @@
 let countdownInterval;
 let timeLeft = 25 * 60; // 25 minutos
+let countdownEndTime = null;
 let pomodoroIndex = 0;
 let shuffledSongs = [];
 const phases = ["Focus", "Break", "Focus", "Break", "Focus", "Break", "Focus", "Long break"];
@@ -119,10 +120,16 @@ function playNotificationSound() {
 function startPomodoro() {
   if (!countdownInterval) {
     playNotificationSound(); // Reproducir sonido solo al inicio de la cuenta regresiva
+    countdownEndTime = Date.now() + timeLeft * 1000;
     countdownInterval = setInterval(() => {
-      if (timeLeft <= 0) {
+      const remainingMs = countdownEndTime - Date.now();
+
+      if (remainingMs <= 0) {
+        timeLeft = 0;
+        updateCountdownDisplay();
         clearInterval(countdownInterval);
         countdownInterval = null;
+        countdownEndTime = null;
 
         // Si la fase actual es "Long break", mostrar el botón "Restart" y mantener la pantalla
         if (phases[pomodoroIndex] === "Long break") {
@@ -133,15 +140,19 @@ function startPomodoro() {
 
         switchToNextPhase();
       } else {
-        timeLeft--;
-        updateCountdownDisplay();
+        const newTimeLeft = Math.ceil(remainingMs / 1000);
+
+        if (newTimeLeft !== timeLeft) {
+          timeLeft = newTimeLeft;
+          updateCountdownDisplay();
+        }
 
         // Fade-out del audio cuando quedan 5 segundos en la "Long break"
         if (phases[pomodoroIndex] === "Long break" && timeLeft === 5) {
           fadeOutAudio();
         }
       }
-    }, 1000);
+    }, 250);
     startButton.textContent = "Pause";
     playMusic();
   }
@@ -149,7 +160,12 @@ function startPomodoro() {
 
 function pausePomodoro() {
   clearInterval(countdownInterval);
+  if (countdownEndTime) {
+    const remainingMs = countdownEndTime - Date.now();
+    timeLeft = Math.max(0, Math.ceil(remainingMs / 1000));
+  }
   countdownInterval = null;
+  countdownEndTime = null;
   startButton.textContent = "Resume";
   pauseMusic();
 }
@@ -157,6 +173,7 @@ function pausePomodoro() {
 function resetPomodoro() {
   clearInterval(countdownInterval);
   countdownInterval = null;
+  countdownEndTime = null;
   pomodoroIndex = 0;
   timeLeft = 25 * 60;
   updateCountdownDisplay();
