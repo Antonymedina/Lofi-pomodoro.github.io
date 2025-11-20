@@ -407,7 +407,7 @@ footer {
   position: fixed;
   bottom: 40px;
   right: 40px;
-  display: flex;
+  display: none;
   flex-direction: row;
   gap: 12px;
   padding: 18px 20px 18px 18px;
@@ -417,16 +417,10 @@ footer {
   border-radius: 18px;
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
   z-index: 10;
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(10px);
-  transition: opacity 0.25s ease, transform 0.25s ease;
 }
 
 .lp-news-banner.visible {
-  opacity: 1;
-  pointer-events: auto;
-  transform: translateY(0);
+  display: flex;
 }
 
 .lp-news-close {

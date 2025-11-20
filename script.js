@@ -6,7 +6,7 @@ const moodPresets = {
 
 let currentPresetKey = 'classic';
 let countdownInterval;
-let timeLeft = moodPresets[currentPresetKey].focus * 60; // 25 minutos
+let timeLeft = 25 * 60; // 25 minutos
 let countdownEndTime = null;
 let pomodoroIndex = 0;
 let shuffledSongs = [];
@@ -20,8 +20,6 @@ const songStatus = document.getElementById('song-status');
 const pomodoroListItems = document.querySelectorAll('.pomodoro-list li');
 const musicIcon = document.getElementById('music-icon');
 const moodButtons = document.querySelectorAll('.mood-option');
-const newsBanner = document.getElementById('lp-news-banner');
-const newsCloseButton = document.getElementById('lp-news-close-btn');
 
 const minuteTens = document.getElementById('minute-tens');
 const minuteUnits = document.getElementById('minute-units');
@@ -441,8 +439,7 @@ function initNewsBanner() {
     return;
   }
 
-  newsBanner.style.display = 'flex';
-  requestAnimationFrame(() => newsBanner.classList.add('visible'));
+  newsBanner.classList.add('visible');
 
   newsCloseButton.addEventListener('click', () => {
     newsBanner.classList.remove('visible');
@@ -481,4 +478,3 @@ updatePhaseStyles();
 updateMusicIcon();
 updateFullscreenIcon();
 updateMoodButtons();
-initNewsBanner();
