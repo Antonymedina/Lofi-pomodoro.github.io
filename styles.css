@@ -1,3 +1,79 @@
+/* Design tokens */
+:root {
+  /* Typography */
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Scale */
+  --size-display-l: clamp(180px, 28vw, 250px);
+  --size-display-m: clamp(120px, 18vw, 150px);
+  --size-display-s: clamp(72px, 12vw, 80px);
+  --size-body-xl: clamp(24px, 3vw, 32px);
+  --size-body-l: clamp(20px, 2.6vw, 25px);
+  --size-body-m: clamp(18px, 2vw, 20px);
+  --size-body-s: 16px;
+  --size-body-xs: 14px;
+
+  /* Primitive colors */
+  --color-text-strong: rgba(29, 9, 5, 1);
+  --color-text-muted: rgba(29, 9, 5, 0.6);
+  --color-text-used: rgba(29, 9, 5, 0.4);
+  --color-surface-contrast: rgba(229, 227, 226, 1);
+
+  /* Focus */
+  --focus-bg: rgba(242, 103, 74, 1);
+  --focus-accent: rgba(133, 24, 1, 1);
+  --focus-accent-soft: rgba(242, 103, 74, 1);
+
+  /* Break */
+  --break-bg: rgba(243, 207, 119, 1);
+  --break-accent: rgba(133, 96, 1, 1);
+
+  /* Long break */
+  --long-bg: rgba(119, 243, 220, 1);
+  --long-accent: rgba(1, 133, 109, 1);
+
+  /* Borders */
+  --border-strong: rgba(29, 9, 5, 0.6);
+  --border-active: rgba(133, 24, 1, 1);
+  --border-break: rgba(133, 96, 1, 1);
+  --border-long: rgba(1, 133, 109, 1);
+
+  /* Shared tokens driven by the active phase */
+  --surface-primary: var(--focus-bg);
+  --surface-action: var(--focus-accent);
+  --surface-action-secondary: var(--focus-accent-soft);
+  --text-primary: var(--color-text-strong);
+  --text-contrast: var(--color-surface-contrast);
+  --text-accent: var(--surface-action);
+  --icon-color: rgba(29, 9, 5, 0.6);
+}
+
+/* Phase overrides */
+.phase-focus {
+  --surface-primary: var(--focus-bg);
+  --surface-action: var(--focus-accent);
+  --surface-action-secondary: var(--focus-accent-soft);
+  --text-accent: var(--focus-accent);
+  --icon-color: var(--border-active);
+}
+
+.phase-break {
+  --surface-primary: var(--break-bg);
+  --surface-action: var(--break-accent);
+  --surface-action-secondary: var(--break-bg);
+  --text-accent: var(--break-accent);
+  --icon-color: var(--border-break);
+}
+
+.phase-long-break {
+  --surface-primary: var(--long-bg);
+  --surface-action: var(--long-accent);
+  --surface-action-secondary: var(--long-bg);
+  --text-accent: var(--long-accent);
+  --icon-color: var(--border-long);
+}
+
 /* General Styles */
 html, body {
   height: 100%;
@@ -6,13 +82,13 @@ html, body {
 body {
   margin: 0;
   padding: 64px 80px;
-  background-color: #F2674A; /* Color por defecto */
-  font-family: 'Inter', sans-serif;
-  color: #FDF3F1;
+  background-color: var(--surface-primary);
+  font-family: var(--font-body);
+  color: var(--text-contrast);
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  transition: background-color 0.5s; /* Transición suave del color de fondo */
+  transition: background-color 0.5s, color 0.5s;
 }
 
 .container {
@@ -27,6 +103,7 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  color: var(--text-primary);
 }
 
 .logo {
@@ -40,14 +117,14 @@ header {
 }
 
 .pomodoro-list li {
-  font-family: 'Inter', sans-serif;
+  font-family: var(--font-body);
   text-align: right;
 }
 
 .used {
-  font-size: 16px;
-  font-weight: 500;
-  color: rgba(29, 9, 5, 0.4);
+  font-size: var(--size-body-s);
+  font-weight: 600;
+  color: var(--color-text-used);
   text-decoration: line-through;
 }
 
@@ -55,9 +132,9 @@ header {
   display: flex;
   align-items: center;
   gap: 10px;
-  font-size: 24px;
+  font-size: var(--size-body-l);
   font-weight: 700;
-  color: rgba(29, 9, 5, 1);
+  color: var(--text-primary);
 }
 
 .live::before {
@@ -70,9 +147,9 @@ header {
 }
 
 .coming {
-  font-size: 16px;
-  font-weight: 500;
-  color: rgba(29, 9, 5, 1);
+  font-size: var(--size-body-s);
+  font-weight: 600;
+  color: var(--color-text-muted);
 }
 
 main {
@@ -84,6 +161,7 @@ main {
 
 .timer {
   text-align: center;
+  color: var(--text-primary);
 }
 
 /* Estilos para el contador */
@@ -98,15 +176,15 @@ main {
 }
 
 .digit {
-  font-family: 'Fraunces', serif;
+  font-family: var(--font-display);
   font-weight: 900;
-  font-size: 300px;
-  color: #1D0905;
+  font-size: var(--size-display-l);
+  color: var(--text-primary);
   line-height: 1;
   position: relative;
   overflow: hidden;
-  width: 230px;
-  height: 300px;
+  width: min(30vw, 230px);
+  height: min(40vh, 300px);
 }
 
 .digit span {
@@ -117,10 +195,10 @@ main {
 }
 
 .colon {
-  font-family: 'Fraunces', serif;
+  font-family: var(--font-display);
   font-weight: 900;
-  font-size: 300px;
-  color: #1D0905;
+  font-size: var(--size-display-l);
+  color: var(--text-primary);
   line-height: 1;
   margin: 0 10px;
 }
@@ -139,25 +217,30 @@ main {
   align-items: center;
   gap: 0.625rem;
   border-radius: 0.75rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 32px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--size-body-xl);
   cursor: pointer;
   border: none;
   opacity: 1;
-  transition: opacity 0.5s;
+  transition: opacity 0.5s, transform 0.2s ease;
   min-width: 200px;
+  color: var(--text-contrast);
 }
 
 .button-primary {
-  background: #851801;
-  color: #F2674A;
+  background: var(--surface-action);
+  color: var(--surface-primary);
 }
 
 .button-secondary {
   background: transparent;
-  border: 2px solid #851801;
-  color: #851801;
+  border: 2px solid var(--surface-action);
+  color: var(--surface-action);
+}
+
+.button:hover {
+  transform: translateY(-2px);
 }
 
 /* Estilos para el footer y controles */
@@ -166,6 +249,7 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--text-primary);
 }
 
 .footer-controls {
@@ -188,10 +272,10 @@ footer {
   gap: 8px;
   background: transparent;
   border: none;
-  color: #851801; /* Color por defecto */
-  font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
+  color: var(--text-accent);
+  font-family: var(--font-body);
+  font-size: var(--size-body-xs);
+  font-weight: 600;
   line-height: normal;
   cursor: pointer;
 }
@@ -210,14 +294,14 @@ footer {
 }
 
 .more-pomodoro h1{
-  color: rgba(29, 9, 5, 0.5);
+  color: var(--icon-color);
   display: flex;
   justify-content: center;
   align-items: center;
   height: 24px;
-  font-family: 'Inter', sans-serif;
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-family: var(--font-body);
+  font-size: var(--size-body-xs);
+  font-weight: 600;
   line-height: normal;
   text-align: center;
   vertical-align: middle;
@@ -225,73 +309,26 @@ footer {
   gap: 16px;
 }
 .more-pomodoro a {
-  color: rgba(29, 9, 5, 0.5);
+  color: var(--icon-color);
   text-decoration: underline;
 }
 
 .x-icono {
-  fill: rgba(29, 9, 5, 0.5);
+  fill: var(--icon-color);
   box-sizing: border-box;
   height: 16px;
   width: 16px;
 }
 
 .mail-icono {
-  fill: rgba(29, 9, 5, 0.5);
+  fill: var(--icon-color);
   box-sizing: border-box;
   height: 20px;
   width: 20px;
 }
 
 /* Estilos para las fases */
-
-/* Focus Phase */
-.phase-focus .button-primary {
-  background: #851801;
-  color: #F2674A;
-}
-
-.phase-focus .button-secondary {
-  border-color: #851801;
-  color: #851801;
-}
-
-.phase-focus .music-control,
-.phase-focus .fullscreen-control {
-  color: #851801;
-}
-
-/* Break Phase */
-.phase-break .button-primary {
-  background: #856001;
-  color: #F3CF77;
-}
-
-.phase-break .button-secondary {
-  border-color: #856001;
-  color: #856001;
-}
-
-.phase-break .music-control,
-.phase-break .fullscreen-control {
-  color: #856001;
-}
-
-/* Long Break Phase */
-.phase-long-break .button-primary {
-  background: #01856D;
-  color: #77F3DC;
-}
-
-.phase-long-break .button-secondary {
-  border-color: #01856D;
-  color: #01856D;
-}
-
-.phase-long-break .music-control,
-.phase-long-break .fullscreen-control {
-  color: #01856D;
-}
+/* Las clases de fase ahora definen tokens CSS para superficies, bordes e iconos */
 
 /* Estilos para el botón "Restart" */
 .restart-button {
@@ -301,13 +338,13 @@ footer {
   align-items: center;
   gap: 0.625rem;
   border-radius: 0.75rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  font-size: 32px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--size-body-xl);
   cursor: pointer;
   border: none;
-  background: #1D0905;
-  color: #77F3DC;
+  background: var(--border-strong);
+  color: var(--text-contrast);
   opacity: 0;
   transition: opacity 0.5s;
 }
@@ -321,18 +358,18 @@ footer {
   }
 
   .digit {
-    font-size: 200px;
+    font-size: var(--size-display-m);
     width: 150px;
     height: 200px;
   }
 
   .colon {
-    font-size: 200px;
+    font-size: var(--size-display-m);
     margin: 0 5px;
   }
 
   .button {
-    font-size: 24px;
+    font-size: var(--size-body-l);
     padding: 0.5rem 1.5rem;
     min-width: 150px;
   }
@@ -341,15 +378,13 @@ footer {
     width: 80px;
   }
 
-  .used {
-    font-size: 14px;
+  .used,
+  .coming {
+    font-size: var(--size-body-xs);
   }
 
   .live {
-    font-size: 20px;
-  }
-  .coming {
-    font-size: 14px;
+    font-size: var(--size-body-m);
   }
 }
 
@@ -360,18 +395,18 @@ footer {
   }
 
   .digit {
-    font-size: 100px;
+    font-size: var(--size-display-s);
     width: 75px;
     height: 100px;
   }
 
   .colon {
-    font-size: 100px;
+    font-size: var(--size-display-s);
     margin: 0 2px;
   }
 
   .button {
-    font-size: 20px;
+    font-size: var(--size-body-m);
     padding: 0.8rem 1rem;
     min-width: 150px;
   }
@@ -424,7 +459,7 @@ footer {
 
   .music-control,
   .fullscreen-control {
-    font-size: 14px;
+    font-size: var(--size-body-xs);
   }
 
   .music-icon,
