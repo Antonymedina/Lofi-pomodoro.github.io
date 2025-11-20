@@ -1,3 +1,10 @@
+const moodPresets = {
+  classic: { focus: 25, break: 5, longBreak: 15 },
+  productive: { focus: 35, break: 5, longBreak: 15 },
+  beast: { focus: 45, break: 5, longBreak: 15 }
+};
+
+let currentPresetKey = 'classic';
 let countdownInterval;
 let timeLeft = 25 * 60; // 25 minutos
 let countdownEndTime = null;
@@ -12,6 +19,7 @@ const musicButton = document.getElementById('music-btn');
 const songStatus = document.getElementById('song-status');
 const pomodoroListItems = document.querySelectorAll('.pomodoro-list li');
 const musicIcon = document.getElementById('music-icon');
+const moodButtons = document.querySelectorAll('.mood-option');
 
 const minuteTens = document.getElementById('minute-tens');
 const minuteUnits = document.getElementById('minute-units');
@@ -49,6 +57,36 @@ function shuffleSongs() {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledSongs[i], shuffledSongs[j]] = [shuffledSongs[j], shuffledSongs[i]];
   }
+}
+
+function getPhaseDurationSeconds(phaseName) {
+  const preset = moodPresets[currentPresetKey];
+
+  if (phaseName === "Break") {
+    return preset.break * 60;
+  }
+
+  if (phaseName === "Long break") {
+    return preset.longBreak * 60;
+  }
+
+  return preset.focus * 60;
+}
+
+function updateMoodButtons() {
+  moodButtons.forEach((button) => {
+    const isActive = button.dataset.mood === currentPresetKey;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', isActive);
+  });
+}
+
+function setMood(presetKey) {
+  if (!moodPresets[presetKey]) return;
+
+  currentPresetKey = presetKey;
+  resetPomodoro();
+  updateMoodButtons();
 }
 
 function getNextSong() {
@@ -170,12 +208,17 @@ function pausePomodoro() {
   pauseMusic();
 }
 
-function resetPomodoro() {
+function resetPomodoro(options = {}) {
+  const { preserveRestart = false } = options;
+
   clearInterval(countdownInterval);
   countdownInterval = null;
   countdownEndTime = null;
   pomodoroIndex = 0;
-  timeLeft = 25 * 60;
+  if (!preserveRestart) {
+    removeRestartButton();
+  }
+  timeLeft = getPhaseDurationSeconds("Focus");
   updateCountdownDisplay();
   resetPomodoroList();
   startButton.textContent = "Start";
@@ -201,13 +244,7 @@ function switchToNextPhase() {
   pomodoroListItems[pomodoroIndex].classList.add('live');
   pomodoroListItems[pomodoroIndex].classList.remove('used', 'coming');
 
-  if (phases[pomodoroIndex] === "Focus") {
-    timeLeft = 25 * 60;
-  } else if (phases[pomodoroIndex] === "Break") {
-    timeLeft = 5 * 60;
-  } else {
-    timeLeft = 15 * 60;
-  }
+  timeLeft = getPhaseDurationSeconds(phases[pomodoroIndex]);
 
   updateBackground();
   updatePhaseStyles();
@@ -244,7 +281,7 @@ function showRestartButton() {
 
 function restartPomodoro() {
   // Restablecer todo al estado inicial
-  resetPomodoro();
+  resetPomodoro({ preserveRestart: true });
 
   // Eliminar el botón "Restart"
   const restartButton = document.getElementById('restart-btn');
@@ -263,6 +300,18 @@ function restartPomodoro() {
       startPomodoro();
     }, 10);
   }, 500); // Coincidir con la duración de la transición CSS
+}
+
+function removeRestartButton() {
+  const restartButton = document.getElementById('restart-btn');
+
+  if (restartButton) {
+    restartButton.remove();
+    startButton.style.display = '';
+    resetButton.style.display = '';
+    startButton.style.opacity = '1';
+    resetButton.style.opacity = '1';
+  }
 }
 
 function resetPomodoroList() {
@@ -365,6 +414,9 @@ function updateFullscreenIcon() {
 
 // Listeners
 fullscreenButton.addEventListener('click', toggleFullScreen);
+moodButtons.forEach((button) => {
+  button.addEventListener('click', () => setMood(button.dataset.mood));
+});
 startButton.addEventListener('click', () => {
   if (countdownInterval) {
     pausePomodoro();
@@ -389,3 +441,4 @@ updateBackground();
 updatePhaseStyles();
 updateMusicIcon();
 updateFullscreenIcon();
+updateMoodButtons();
