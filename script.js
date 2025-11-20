@@ -1,5 +1,13 @@
+const moodPresets = {
+  classic: { focus: 25, break: 5, longBreak: 15 },
+  productive: { focus: 35, break: 5, longBreak: 15 },
+  beast: { focus: 45, break: 5, longBreak: 15 }
+};
+
+let currentPresetKey = 'classic';
 let countdownInterval;
-let timeLeft = 25 * 60; // 25 minutos
+let timeLeft = moodPresets[currentPresetKey].focus * 60; // 25 minutos
+let countdownEndTime = null;
 let pomodoroIndex = 0;
 let shuffledSongs = [];
 const phases = ["Focus", "Break", "Focus", "Break", "Focus", "Break", "Focus", "Long break"];
@@ -11,6 +19,9 @@ const musicButton = document.getElementById('music-btn');
 const songStatus = document.getElementById('song-status');
 const pomodoroListItems = document.querySelectorAll('.pomodoro-list li');
 const musicIcon = document.getElementById('music-icon');
+const moodButtons = document.querySelectorAll('.mood-option');
+const newsBanner = document.getElementById('lp-news-banner');
+const newsCloseButton = document.getElementById('lp-news-close-btn');
 
 const minuteTens = document.getElementById('minute-tens');
 const minuteUnits = document.getElementById('minute-units');
@@ -39,7 +50,24 @@ const songs = [
   'songs/song10.mp3',
   'songs/song11.mp3',
   'songs/song12.mp3',
-  'songs/song13.mp3'
+  'songs/song13.mp3',
+  'songs/song14.mp3',
+  'songs/song15.mp3',
+  'songs/song16.mp3',
+  'songs/song17.mp3',
+  'songs/song18.mp3',
+  'songs/song19.mp3',
+  'songs/song20.mp3',
+  'songs/song21.mp3',
+  'songs/song22.mp3',
+  'songs/song23.mp3',
+  'songs/song24.mp3',
+  'songs/song25.mp3',
+  'songs/song26.mp3',
+  'songs/song27.mp3',
+  'songs/song28.mp3',
+  'songs/song29.mp3',
+  'songs/song30.mp3'
 ];
 
 function shuffleSongs() {
@@ -48,6 +76,36 @@ function shuffleSongs() {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffledSongs[i], shuffledSongs[j]] = [shuffledSongs[j], shuffledSongs[i]];
   }
+}
+
+function getPhaseDurationSeconds(phaseName) {
+  const preset = moodPresets[currentPresetKey];
+
+  if (phaseName === "Break") {
+    return preset.break * 60;
+  }
+
+  if (phaseName === "Long break") {
+    return preset.longBreak * 60;
+  }
+
+  return preset.focus * 60;
+}
+
+function updateMoodButtons() {
+  moodButtons.forEach((button) => {
+    const isActive = button.dataset.mood === currentPresetKey;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-pressed', isActive);
+  });
+}
+
+function setMood(presetKey) {
+  if (!moodPresets[presetKey]) return;
+
+  currentPresetKey = presetKey;
+  resetPomodoro();
+  updateMoodButtons();
 }
 
 function getNextSong() {
@@ -119,10 +177,16 @@ function playNotificationSound() {
 function startPomodoro() {
   if (!countdownInterval) {
     playNotificationSound(); // Reproducir sonido solo al inicio de la cuenta regresiva
+    countdownEndTime = Date.now() + timeLeft * 1000;
     countdownInterval = setInterval(() => {
-      if (timeLeft <= 0) {
+      const remainingMs = countdownEndTime - Date.now();
+
+      if (remainingMs <= 0) {
+        timeLeft = 0;
+        updateCountdownDisplay();
         clearInterval(countdownInterval);
         countdownInterval = null;
+        countdownEndTime = null;
 
         // Si la fase actual es "Long break", mostrar el botón "Restart" y mantener la pantalla
         if (phases[pomodoroIndex] === "Long break") {
@@ -133,15 +197,19 @@ function startPomodoro() {
 
         switchToNextPhase();
       } else {
-        timeLeft--;
-        updateCountdownDisplay();
+        const newTimeLeft = Math.ceil(remainingMs / 1000);
+
+        if (newTimeLeft !== timeLeft) {
+          timeLeft = newTimeLeft;
+          updateCountdownDisplay();
+        }
 
         // Fade-out del audio cuando quedan 5 segundos en la "Long break"
         if (phases[pomodoroIndex] === "Long break" && timeLeft === 5) {
           fadeOutAudio();
         }
       }
-    }, 1000);
+    }, 250);
     startButton.textContent = "Pause";
     playMusic();
   }
@@ -149,16 +217,27 @@ function startPomodoro() {
 
 function pausePomodoro() {
   clearInterval(countdownInterval);
+  if (countdownEndTime) {
+    const remainingMs = countdownEndTime - Date.now();
+    timeLeft = Math.max(0, Math.ceil(remainingMs / 1000));
+  }
   countdownInterval = null;
+  countdownEndTime = null;
   startButton.textContent = "Resume";
   pauseMusic();
 }
 
-function resetPomodoro() {
+function resetPomodoro(options = {}) {
+  const { preserveRestart = false } = options;
+
   clearInterval(countdownInterval);
   countdownInterval = null;
+  countdownEndTime = null;
   pomodoroIndex = 0;
-  timeLeft = 25 * 60;
+  if (!preserveRestart) {
+    removeRestartButton();
+  }
+  timeLeft = getPhaseDurationSeconds("Focus");
   updateCountdownDisplay();
   resetPomodoroList();
   startButton.textContent = "Start";
@@ -184,13 +263,7 @@ function switchToNextPhase() {
   pomodoroListItems[pomodoroIndex].classList.add('live');
   pomodoroListItems[pomodoroIndex].classList.remove('used', 'coming');
 
-  if (phases[pomodoroIndex] === "Focus") {
-    timeLeft = 25 * 60;
-  } else if (phases[pomodoroIndex] === "Break") {
-    timeLeft = 5 * 60;
-  } else {
-    timeLeft = 15 * 60;
-  }
+  timeLeft = getPhaseDurationSeconds(phases[pomodoroIndex]);
 
   updateBackground();
   updatePhaseStyles();
@@ -227,7 +300,7 @@ function showRestartButton() {
 
 function restartPomodoro() {
   // Restablecer todo al estado inicial
-  resetPomodoro();
+  resetPomodoro({ preserveRestart: true });
 
   // Eliminar el botón "Restart"
   const restartButton = document.getElementById('restart-btn');
@@ -246,6 +319,18 @@ function restartPomodoro() {
       startPomodoro();
     }, 10);
   }, 500); // Coincidir con la duración de la transición CSS
+}
+
+function removeRestartButton() {
+  const restartButton = document.getElementById('restart-btn');
+
+  if (restartButton) {
+    restartButton.remove();
+    startButton.style.display = '';
+    resetButton.style.display = '';
+    startButton.style.opacity = '1';
+    resetButton.style.opacity = '1';
+  }
 }
 
 function resetPomodoroList() {
@@ -346,8 +431,30 @@ function updateFullscreenIcon() {
   fullscreenStatus.textContent = document.fullscreenElement ? 'Exit Full Screen' : 'Full Screen';
 }
 
+function initNewsBanner() {
+  if (!newsBanner || !newsCloseButton) return;
+
+  const isClosed = localStorage.getItem('lp_v2_notice_closed') === 'true';
+
+  if (isClosed) {
+    newsBanner.style.display = 'none';
+    return;
+  }
+
+  newsBanner.classList.add('visible');
+
+  newsCloseButton.addEventListener('click', () => {
+    newsBanner.classList.remove('visible');
+    newsBanner.style.display = 'none';
+    localStorage.setItem('lp_v2_notice_closed', 'true');
+  });
+}
+
 // Listeners
 fullscreenButton.addEventListener('click', toggleFullScreen);
+moodButtons.forEach((button) => {
+  button.addEventListener('click', () => setMood(button.dataset.mood));
+});
 startButton.addEventListener('click', () => {
   if (countdownInterval) {
     pausePomodoro();
@@ -372,3 +479,5 @@ updateBackground();
 updatePhaseStyles();
 updateMusicIcon();
 updateFullscreenIcon();
+updateMoodButtons();
+initNewsBanner();

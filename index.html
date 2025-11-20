@@ -98,6 +98,23 @@
       </nav>
     </header>
     <main>
+      <section class="mood-panel" aria-label="Focus mood">
+        <div class="mood-label">Focus mood</div>
+        <div class="mood-options" role="group" aria-label="Select focus mode">
+          <button class="mood-option active" data-mood="classic" aria-pressed="true">
+            <span aria-hidden="true">😊</span>
+            <span class="mood-name">Classic</span>
+          </button>
+          <button class="mood-option" data-mood="productive" aria-pressed="false">
+            <span aria-hidden="true">🧠</span>
+            <span class="mood-name">Productive</span>
+          </button>
+          <button class="mood-option" data-mood="beast" aria-pressed="false">
+            <span aria-hidden="true">🔥</span>
+            <span class="mood-name">Beast</span>
+          </button>
+        </div>
+      </section>
       <div class="timer">
         <div class="countdown" role="timer" aria-live="polite">
           <div class="time-section minutes">
@@ -133,12 +150,23 @@
         </div>
       </div>
     </footer>
-    <div class="more-pomodoro">
-      <a href="more-pomodoro/index.html" aria-label="More Pomodoro section">
-        <h1>More Pomodoro</h1>
-      </a>
-    </div>
+  <div class="more-pomodoro">
+    <a href="more-pomodoro/index.html" aria-label="More Pomodoro section">
+      <h1>More Pomodoro</h1>
+    </a>
   </div>
+ </div>
+  <aside id="lp-news-banner" class="lp-news-banner" aria-live="polite">
+    <button id="lp-news-close-btn" class="lp-news-close" aria-label="Close Lofi Pomodoro 2.0 notice">✕</button>
+    <div class="lp-news-content">
+      <p class="lp-news-title">Lofi Pomodoro 2.0</p>
+      <p class="lp-news-subtitle">New features:</p>
+      <ul class="lp-news-list">
+        <li>→ 🤓 New focus moods</li>
+        <li>→ 🎧 New songs</li>
+      </ul>
+    </div>
+  </aside>
   <script src="script.js"></script>
 </body>
 </html>
