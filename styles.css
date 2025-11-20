@@ -19,7 +19,6 @@ body {
   flex: 1 0 auto;
   display: flex;
   flex-direction: column;
-  /* Añadir height al 100% */
   height: 100%;
 }
 
@@ -81,8 +80,6 @@ main {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Añadir overflow */
-  overflow: auto;
 }
 
 .timer {
@@ -149,6 +146,7 @@ main {
   border: none;
   opacity: 1;
   transition: opacity 0.5s;
+  min-width: 200px;
 }
 
 .button-primary {
@@ -199,7 +197,7 @@ footer {
 }
 
 .music-icon,
-.fullscreen-icon {
+.fullscreen-icon, .arrow-icon {
   width: 12px;
   height: 12px;
 }
@@ -209,6 +207,40 @@ footer {
   border: none;
   padding: 0;
   cursor: pointer;
+}
+
+.more-pomodoro h1{
+  color: rgba(29, 9, 5, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 24px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: normal;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+  gap: 16px;
+}
+.more-pomodoro a {
+  color: rgba(29, 9, 5, 0.5);
+  text-decoration: underline;
+}
+
+.x-icono {
+  fill: rgba(29, 9, 5, 0.5);
+  box-sizing: border-box;
+  height: 16px;
+  width: 16px;
+}
+
+.mail-icono {
+  fill: rgba(29, 9, 5, 0.5);
+  box-sizing: border-box;
+  height: 20px;
+  width: 20px;
 }
 
 /* Estilos para las fases */
@@ -229,35 +261,35 @@ footer {
   color: #851801;
 }
 
-/* Pause Phase */
-.phase-pause .button-primary {
+/* Break Phase */
+.phase-break .button-primary {
   background: #856001;
   color: #F3CF77;
 }
 
-.phase-pause .button-secondary {
+.phase-break .button-secondary {
   border-color: #856001;
   color: #856001;
 }
 
-.phase-pause .music-control,
-.phase-pause .fullscreen-control {
+.phase-break .music-control,
+.phase-break .fullscreen-control {
   color: #856001;
 }
 
-/* Long Pause Phase */
-.phase-long-pause .button-primary {
+/* Long Break Phase */
+.phase-long-break .button-primary {
   background: #01856D;
   color: #77F3DC;
 }
 
-.phase-long-pause .button-secondary {
+.phase-long-break .button-secondary {
   border-color: #01856D;
   color: #01856D;
 }
 
-.phase-long-pause .music-control,
-.phase-long-pause .fullscreen-control {
+.phase-long-break .music-control,
+.phase-long-break .fullscreen-control {
   color: #01856D;
 }
 
@@ -302,6 +334,7 @@ footer {
   .button {
     font-size: 24px;
     padding: 0.5rem 1.5rem;
+    min-width: 150px;
   }
 
   .logo {
@@ -323,7 +356,7 @@ footer {
 /* Móviles (pantallas de hasta 767px) */
 @media screen and (max-width: 767px) {
   body {
-    padding: 0 20px;
+    padding: 0px 20px;
   }
 
   .digit {
@@ -338,8 +371,9 @@ footer {
   }
 
   .button {
-    font-size: 18px;
-    padding: 0.5rem 1rem;
+    font-size: 20px;
+    padding: 0.8rem 1rem;
+    min-width: 150px;
   }
 
   .logo {
@@ -353,7 +387,7 @@ footer {
   }
 
   .pomodoro-list {
-    margin-top: 40px;
+    margin-top: 32px;
     width: 100%;
   }
   .pomodoro-list li {
@@ -378,9 +412,13 @@ footer {
     gap: 16px;
     padding-bottom:40px;
   }
+  .more-pomodoro {
+ 
+    padding-bottom:40px;
+  }
 
   .footer-controls {
-    flex-direction: row;
+    flex-direction: row-reverse;
     gap: 16px;
   }
 
@@ -390,7 +428,7 @@ footer {
   }
 
   .music-icon,
-  .fullscreen-icon {
+  .fullscreen-icon, .arrow-icon {
     width: 16px;
     height: 16px;
   }
@@ -398,5 +436,8 @@ footer {
   .controls {
     flex-direction: column;
     gap: 16px;
+  }
+  .right-controls {
+    display: none;
   }
 }

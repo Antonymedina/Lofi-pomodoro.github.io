@@ -1,7 +1,8 @@
 let countdownInterval;
 let timeLeft = 25 * 60; // 25 minutos
 let pomodoroIndex = 0;
-const phases = ["Focus", "Pause", "Focus", "Pause", "Focus", "Pause", "Focus", "Long pause"];
+let shuffledSongs = [];
+const phases = ["Focus", "Break", "Focus", "Break", "Focus", "Break", "Focus", "Long break"];
 
 const countdownElement = document.querySelector('.countdown');
 const startButton = document.getElementById('start-btn');
@@ -38,9 +39,23 @@ const songs = [
   'songs/song10.mp3',
   'songs/song11.mp3',
   'songs/song12.mp3',
-  'songs/song13.mp3',
-  'songs/song14.mp3'
+  'songs/song13.mp3'
 ];
+
+function shuffleSongs() {
+  shuffledSongs = songs.slice(); // Crear una copia del arreglo original
+  for (let i = shuffledSongs.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledSongs[i], shuffledSongs[j]] = [shuffledSongs[j], shuffledSongs[i]];
+  }
+}
+
+function getNextSong() {
+  if (shuffledSongs.length === 0) {
+    shuffleSongs(); // Volver a mezclar si se han reproducido todas las canciones
+  }
+  return shuffledSongs.shift(); // Tomar la siguiente canción
+}
 
 function updateCountdownDisplay() {
   const minutes = Math.floor(timeLeft / 60).toString().padStart(2, '0');
@@ -62,9 +77,9 @@ function updateDigit(element, newDigit) {
 function updateBackground() {
   let bgColor = '#F2674A'; // Color por defecto para "Focus"
 
-  if (phases[pomodoroIndex] === "Pause") {
+  if (phases[pomodoroIndex] === "Break") {
     bgColor = '#F3CF77';
-  } else if (phases[pomodoroIndex] === "Long pause") {
+  } else if (phases[pomodoroIndex] === "Long break") {
     bgColor = '#77F3DC';
   }
 
@@ -73,15 +88,15 @@ function updateBackground() {
 
 function updatePhaseStyles() {
   // Remover clases de fase anteriores
-  document.body.classList.remove('phase-focus', 'phase-pause', 'phase-long-pause');
+  document.body.classList.remove('phase-focus', 'phase-break', 'phase-long-break');
 
   // Añadir clase según la fase actual
   if (phases[pomodoroIndex] === "Focus") {
     document.body.classList.add('phase-focus');
-  } else if (phases[pomodoroIndex] === "Pause") {
-    document.body.classList.add('phase-pause');
-  } else if (phases[pomodoroIndex] === "Long pause") {
-    document.body.classList.add('phase-long-pause');
+  } else if (phases[pomodoroIndex] === "Break") {
+    document.body.classList.add('phase-break');
+  } else if (phases[pomodoroIndex] === "Long break") {
+    document.body.classList.add('phase-long-break');
   }
 
   // Actualizar los iconos y textos de música y pantalla completa
@@ -95,8 +110,8 @@ function playNotificationSound() {
 
   if (phaseName === "Focus") {
     notificationAudio.src = 'notifications/focus.MP3';
-  } else if (phaseName === "Pause" || phaseName === "Long pause") {
-    notificationAudio.src = 'notifications/pause.MP3';
+  } else if (phaseName === "Break" || phaseName === "Long break") {
+    notificationAudio.src = 'notifications/break.MP3'; // Asegúrate de que este archivo exista
   }
   notificationAudio.play();
 }
@@ -109,8 +124,8 @@ function startPomodoro() {
         clearInterval(countdownInterval);
         countdownInterval = null;
 
-        // Si la fase actual es "Long pause", mostrar el botón "Restart" y mantener la pantalla
-        if (phases[pomodoroIndex] === "Long pause") {
+        // Si la fase actual es "Long break", mostrar el botón "Restart" y mantener la pantalla
+        if (phases[pomodoroIndex] === "Long break") {
           updateCountdownDisplay(); // Asegurar que muestre 00:00
           showRestartButton();
           return;
@@ -121,8 +136,8 @@ function startPomodoro() {
         timeLeft--;
         updateCountdownDisplay();
 
-        // Fade-out del audio cuando quedan 5 segundos en la "Long pause"
-        if (phases[pomodoroIndex] === "Long pause" && timeLeft === 5) {
+        // Fade-out del audio cuando quedan 5 segundos en la "Long break"
+        if (phases[pomodoroIndex] === "Long break" && timeLeft === 5) {
           fadeOutAudio();
         }
       }
@@ -171,7 +186,7 @@ function switchToNextPhase() {
 
   if (phases[pomodoroIndex] === "Focus") {
     timeLeft = 25 * 60;
-  } else if (phases[pomodoroIndex] === "Pause") {
+  } else if (phases[pomodoroIndex] === "Break") {
     timeLeft = 5 * 60;
   } else {
     timeLeft = 15 * 60;
@@ -208,127 +223,128 @@ function showRestartButton() {
         restartButton.style.opacity = '1';
       }, 10);
     }, 500); // Coincidir con la duración de la transición CSS
-  }
+}
 
-  function restartPomodoro() {
-    // Restablecer todo al estado inicial
-    resetPomodoro();
-  
-    // Eliminar el botón "Restart"
-    const restartButton = document.getElementById('restart-btn');
-    restartButton.style.opacity = '0';
+function restartPomodoro() {
+  // Restablecer todo al estado inicial
+  resetPomodoro();
+
+  // Eliminar el botón "Restart"
+  const restartButton = document.getElementById('restart-btn');
+  restartButton.style.opacity = '0';
+  setTimeout(() => {
+    restartButton.remove();
+
+    // Mostrar nuevamente los botones "Start" y "Reset"
+    startButton.style.display = '';
+    resetButton.style.display = '';
     setTimeout(() => {
-      restartButton.remove();
-  
-      // Mostrar nuevamente los botones "Start" y "Reset"
-      startButton.style.display = '';
-      resetButton.style.display = '';
-      setTimeout(() => {
-        startButton.style.opacity = '1';
-        resetButton.style.opacity = '1';
-  
-        // Iniciar automáticamente el temporizador en la fase "Focus"
-        startPomodoro();
-      }, 10);
-    }, 500); // Coincidir con la duración de la transición CSS
-  }
+      startButton.style.opacity = '1';
+      resetButton.style.opacity = '1';
 
-  function resetPomodoroList() {
-    pomodoroListItems.forEach((item, index) => {
-      item.classList.remove('used', 'live', 'coming');
-      if (index === 0) {
-        item.classList.add('live');
-      } else {
-        item.classList.add('coming');
-      }
-    });
-  }
-  
-  function playMusic() {
-    if (!audio.src || audio.ended) {
-      selectRandomSong();
-    }
-    audio.play();
-    songStatus.textContent = "Song playing";
-    isPlaying = true;
-    updateMusicIcon();
-  }
-  
-  function pauseMusic() {
-    audio.pause();
-    songStatus.textContent = "Song paused";
-    isPlaying = false;
-    updateMusicIcon();
-  }
-  
-  function resetMusic() {
-    audio.pause();
-    audio.currentTime = 0;
-    audio.volume = 1; // Restablecer el volumen
-    audio = new Audio(); // Crear un nuevo objeto Audio
-    isPlaying = false;
-    songStatus.textContent = "Song paused";
-    updateMusicIcon();
-  }
-  
-  function selectRandomSong() {
-    const randomIndex = Math.floor(Math.random() * songs.length);
-    audio.src = songs[randomIndex];
-  }
+      // Iniciar automáticamente el temporizador en la fase "Focus"
+      startPomodoro();
+    }, 10);
+  }, 500); // Coincidir con la duración de la transición CSS
+}
 
-  // Event listener para reproducir una nueva canción cuando termina la actual
-audio.addEventListener('ended', () => {
-    if (isPlaying) {
-      selectRandomSong();
-      audio.play();
+function resetPomodoroList() {
+  pomodoroListItems.forEach((item, index) => {
+    item.classList.remove('used', 'live', 'coming');
+    if (index === 0) {
+      item.classList.add('live');
+    } else {
+      item.classList.add('coming');
     }
   });
-  
-  function fadeOutAudio() {
-    let fadeDuration = 5000; // 5 segundos
-    let fadeSteps = 50; // Número de pasos
-    let fadeStepTime = fadeDuration / fadeSteps;
-    let originalVolume = audio.volume;
-    let fadeStep = originalVolume / fadeSteps;
-  
-    let fadeInterval = setInterval(() => {
-      if (audio.volume > 0) {
-        audio.volume = Math.max(0, audio.volume - fadeStep);
-      } else {
-        clearInterval(fadeInterval);
-      }
-    }, fadeStepTime);
+}
+
+function playMusic() {
+  if (!audio.src || audio.ended) {
+    const nextSong = getNextSong();
+    audio.src = nextSong;
   }
-  
-  function updateMusicIcon() {
-    // Determinar el nombre del archivo de imagen según la fase y el estado
-    let phaseName = phases[pomodoroIndex].toLowerCase().replace(' ', '-'); // 'focus', 'pause', 'long-pause'
-    let playPause = isPlaying ? 'Pause' : 'Play';
-    let imageFilename = `${playPause}-${phaseName}.png`; // Ejemplo: 'Play-focus.png'
-  
-    musicIcon.src = `assets/${imageFilename}`;
+  audio.play();
+  songStatus.textContent = "Song playing";
+  isPlaying = true;
+  updateMusicIcon();
+}
+
+function pauseMusic() {
+  audio.pause();
+  songStatus.textContent = "Song paused";
+  isPlaying = false;
+  updateMusicIcon();
+}
+
+function resetMusic() {
+  audio.pause();
+  audio.currentTime = 0;
+  audio.volume = 1; // Restablecer el volumen
+  audio = new Audio(); // Crear un nuevo objeto Audio
+  isPlaying = false;
+  songStatus.textContent = "Song paused";
+  updateMusicIcon();
+  shuffleSongs(); // Volver a mezclar las canciones
+}
+
+// Event listener para reproducir una nueva canción cuando termina la actual
+audio.addEventListener('ended', () => {
+  if (isPlaying) {
+    const nextSong = getNextSong();
+    audio.src = nextSong;
+    audio.play();
   }
-  
-  function updateFullscreenIcon() {
-    let phaseName = phases[pomodoroIndex].toLowerCase().replace(' ', '-'); // 'focus', 'pause', 'long-pause'
-    let fullscreenState = document.fullscreenElement ? 'Full-screen-exit' : 'Full-screen';
-    let imageFilename = `${fullscreenState}-${phaseName}.png`; // Ejemplo: 'Full-screen-focus.png'
-  
-    fullscreenIcon.src = `assets/${imageFilename}`;
-    fullscreenStatus.textContent = document.fullscreenElement ? 'Exit Full Screen' : 'Full Screen';
-  }
-  
-  function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        alert(`Error al intentar activar el modo de pantalla completa: ${err.message} (${err.name})`);
-      });
+});
+
+function fadeOutAudio() {
+  let fadeDuration = 5000; // 5 segundos
+  let fadeSteps = 50; // Número de pasos
+  let fadeStepTime = fadeDuration / fadeSteps;
+  let originalVolume = audio.volume;
+  let fadeStep = originalVolume / fadeSteps;
+
+  let fadeInterval = setInterval(() => {
+    if (audio.volume > 0) {
+      audio.volume = Math.max(0, audio.volume - fadeStep);
     } else {
-      document.exitFullscreen();
+      clearInterval(fadeInterval);
     }
-    // Actualizar el icono y el texto
-    updateFullscreenIcon();
-  }
+  }, fadeStepTime);
+}
+
+function updateMusicIcon() {
+  // Determinar el nombre del archivo de imagen según la fase y el estado
+  let phaseName = phases[pomodoroIndex].toLowerCase().replace(' ', '-'); // 'focus', 'break', 'long-break'
+  let playPause = isPlaying ? 'Pause' : 'Play';
+  let imageFilename = `${playPause}-${phaseName}.png`; // Ejemplo: 'Play-focus.png'
+
+  musicIcon.src = `assets/${imageFilename}`;
+}
+
+// Listener para el evento fullscreenchange
+document.addEventListener('fullscreenchange', updateFullscreenIcon);
+
+// Función para alternar pantalla completa
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch((err) => {
+            alert(`Error al intentar activar el modo de pantalla completa: ${err.message} (${err.name})`);
+        });
+    } else {
+        document.exitFullscreen();
+    }
+    // Eliminamos la llamada inmediata a updateFullscreenIcon()
+}
+
+function updateFullscreenIcon() {
+  let phaseName = phases[pomodoroIndex].toLowerCase().replace(' ', '-'); // 'focus', 'break', 'long-break'
+  let fullscreenState = document.fullscreenElement ? 'Full-screen-exit' : 'Full-screen';
+  let imageFilename = `${fullscreenState}-${phaseName}.png`; // Ejemplo: 'Full-screen-exit-focus.png'
+
+  fullscreenIcon.src = `assets/${imageFilename}`;
+  fullscreenStatus.textContent = document.fullscreenElement ? 'Exit Full Screen' : 'Full Screen';
+}
 
 // Listeners
 fullscreenButton.addEventListener('click', toggleFullScreen);
@@ -348,6 +364,8 @@ musicButton.addEventListener('click', () => {
   }
 });
 
+
+shuffleSongs();
 // Actualización inicial
 updateCountdownDisplay();
 updateBackground();

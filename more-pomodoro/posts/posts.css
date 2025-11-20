@@ -1,0 +1,160 @@
+/* ──────────────────────────────────────────────────────────────────────────
+   Master Blog Styles
+   ──────────────────────────────────────────────────────────────────────────
+   Variables, tipografía, márgenes y colores globales para artículos de blog
+   ────────────────────────────────────────────────────────────────────────── */
+
+/* 1. Variables CSS para fácil theming y mantenimiento */
+:root {
+  /* Colores */
+  --color-text: #1D0905;
+  --color-bg: #F2674A;
+  --color-link: #1D0905;
+  --color-link-hover: #000000;
+
+  /* Fuentes */
+  --font-serif: 'Fraunces', serif;
+  --font-sans: 'Inter', sans-serif;
+
+  /* Tipografía (en rem) */
+  --fs-h1: 2rem;      /* 32px */
+  --fs-h2: 1.5625rem; /* 25px */
+  --fs-h3: 1.25rem;   /* 20px */
+  --fs-summary: 1.25rem; /* 20px */
+  --fs-body: 1rem;    /* 16px */
+
+  /* Espaciados */
+  --lh: 1.2;
+  --mt-h1: 2.5rem;  /* 40px */
+  --mb-h1: 1rem;    /* 16px */
+  --mt-h2: 2.5rem;  /* 40px */
+  --mb-h2: 1rem;    /* 16px */
+  --mt-h3: 1.25rem; /* 20px */
+  --mb-h3: 0.5rem;  /* 8px */
+}
+
+/* 2. Reset / Base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  line-height: var(--lh);
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 3. Encabezados */
+h1, h2, h3 {
+  color: var(--color-text);
+  line-height: var(--lh);
+  letter-spacing: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* H1 */
+h1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 900;
+  margin-top: var(--mt-h1);
+  margin-bottom: var(--mb-h1);
+}
+
+/* H2 */
+h2 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h2);
+  font-weight: 600; /* semibold */
+  margin-top: var(--mt-h2);
+  margin-bottom: var(--mb-h2);
+}
+
+/* H3 */
+h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h3);
+  font-weight: 400;
+  margin-top: var(--mt-h3);
+  margin-bottom: var(--mb-h3);
+}
+
+/* 4. Texto resumen del artículo */
+.article-summary {
+  font-family: var(--font-sans);
+  font-size: var(--fs-summary);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 1rem 0;
+}
+
+/* Enlaces dentro del resumen */
+.article-summary a {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+.article-summary a:focus,
+.article-summary a:hover {
+  color: var(--color-link-hover);
+}
+
+/* 5. Texto del cuerpo */
+.article-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0 0 1rem 0;
+  line-height: var(--lh);
+}
+.article-body a {
+  color: var(--color-link);
+  text-decoration: underline;
+}
+.article-body a:focus,
+.article-body a:hover {
+  color: var(--color-link-hover);
+}
+
+/* 6. Wrapper general (mismo que “more-pomodoro”) */
+.wrapper {
+  margin: 0 auto;
+  padding: 0 1rem;
+  max-width: 800px;
+}
+
+/* 7. Mejoras de accesibilidad */
+:focus {
+  outline: 2px solid var(--color-link-hover);
+  outline-offset: 2px;
+}
+
+/* 8. Font-display para inter y fraunces (establece en @font-face) */
+/*
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/Inter.woff2') format('woff2');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/Fraunces.woff2') format('woff2');
+  font-display: swap;
+}
+*/
+
+/* 9. Media queries (si deseas ajustes responsivos específicos) */
+/* Por ejemplo, aumentar el tamaño de texto en pantallas grandes */
+@media (min-width: 1024px) {
+  :root {
+    --fs-body: 1.0625rem; /* 17px */
+    --fs-summary: 1.3125rem; /* 21px */
+  }
+}

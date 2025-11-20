@@ -1,0 +1,80 @@
+/* ===== Contenedor y espaciados generales ===== */
+.mp-logo-container {
+  text-align: center;
+  margin: 0 auto 64px;
+}
+.mp-logo {
+  font-family: 'Inter', sans-serif;
+  font-size: 24px;
+  font-weight: bold;
+  color: #1D0905;
+  text-decoration: none;
+}
+
+/* ===== Sección Blog ===== */
+.mp-blog-section {
+  margin: 0 auto;
+  padding: 0 40px;
+  width: 100%;
+  box-sizing: border-box;
+}
+.mp-section-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1D0905;
+  margin-bottom: 32px;
+}
+
+/* ===== Post individual ===== */
+.mp-post {
+  margin-bottom: 48px; /* separa del siguiente artículo */
+}
+.mp-post-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 25px;
+  font-weight: 700;
+  color: #1D0905;
+  margin: 0;
+}
+.mp-post-body {
+  margin-top: 16px;
+}
+.mp-post-excerpt {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1D0905;
+  margin: 0 0 8px 0;
+}
+.mp-post-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1D0905;
+  text-decoration: underline;
+}
+
+/* ===== Separador tras cada post ===== */
+.mp-post-divider {
+  border: none;
+  height: 1px;
+  background-color: rgba(29, 9, 5, 0.4);
+  margin: 32px 0 0 0;
+}
+
+/* ===== Breakpoints ===== */
+/* Tablet: ancho ≥ 768px */
+@media (min-width: 768px) {
+  .mp-blog-section {
+    padding: 0 120px;
+  }
+}
+
+/* Desktop: ancho ≥ 1024px */
+@media (min-width: 1024px) {
+  .mp-blog-section {
+    width: 50%;
+    padding: 0;
+  }
+}

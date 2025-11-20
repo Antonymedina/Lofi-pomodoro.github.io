@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -24,75 +24,82 @@
       "creator": {
         "@type": "Organization",
         "name": "Lofi Pomodoro Team"
-      }
+      },
+      "music": [
+        {
+          "@type": "MusicRecording",
+          "name": "I Don't Need Your Love",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Adi Goldstein"
+          },
+          "inAlbum": "Uppbeat Music",
+          "datePublished": "2023-01-01",
+          "license": "https://uppbeat.io/terms",
+          "url": "https://uppbeat.io/t/adi-goldstein/i-dont-need-your-love"
+        },
+        {
+          "@type": "MusicRecording",
+          "name": "Dream Bird",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Jonny Easton"
+          },
+          "inAlbum": "Uppbeat Music",
+          "datePublished": "2023-01-01",
+          "license": "https://uppbeat.io/terms",
+          "url": "https://uppbeat.io/t/jonny-easton/dream-bird"
+        },
+        {
+          "@type": "MusicRecording",
+          "name": "Late Nights",
+          "byArtist": {
+            "@type": "MusicGroup",
+            "name": "Pryces"
+          },
+          "inAlbum": "Uppbeat Music",
+          "datePublished": "2023-01-01",
+          "license": "https://uppbeat.io/terms",
+          "url": "https://uppbeat.io/t/pryces/lateflights"
+        }
+      ]
     }
     </script>
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "MusicRecording",
-        "name": "I Don't Need Your Love",
-        "byArtist": {
-          "@type": "MusicGroup",
-          "name": "Adi Goldstein"
-        },
-        "inAlbum": "Uppbeat Music",
-        "datePublished": "2023-01-01",
-        "license": "https://uppbeat.io/terms",
-        "url": "https://uppbeat.io/t/adi-goldstein/i-dont-need-your-love"
-      }
-      </script>
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "MusicRecording",
-        "name": "Dream Bird",
-        "byArtist": {
-          "@type": "MusicGroup",
-          "name": "Jonny Easton"
-        },
-        "inAlbum": "Uppbeat Music",
-        "datePublished": "2023-01-01",
-        "license": "https://uppbeat.io/terms",
-        "url": "https://uppbeat.io/t/jonny-easton/dream-bird"
-      }
-      </script>
-      
-      <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "MusicRecording",
-        "name": "Late Nights",
-        "byArtist": {
-          "@type": "MusicGroup",
-          "name": "Pryces"
-        },
-        "inAlbum": "Uppbeat Music",
-        "datePublished": "2023-01-01",
-        "license": "https://uppbeat.io/terms",
-        "url": "https://uppbeat.io/t/pryces/lateflights"
-      }
-      </script>      
+    <meta property="og:title" content="Lofi Pomodoro: Boost Your Productivity">
+    <meta property="og:description" content="A web app that combines the Pomodoro technique with relaxing lofi music to boost focus and productivity.">
+    <meta property="og:image" content="https://www.lofipomodoro.com/assets/og-image.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4CPHVGHE75"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-4CPHVGHE75');
+</script>        
 </head>
 <body>
   <div class="container">
     <header>
       <img src="assets/logo.png" alt="Lofi Pomodoro Logo" class="logo">
-      <ul class="pomodoro-list">
-        <li class="live">Focus</li>
-        <li class="coming">Pause</li>
-        <li class="coming">Focus</li>
-        <li class="coming">Pause</li>
-        <li class="coming">Focus</li>
-        <li class="coming">Pause</li>
-        <li class="coming">Focus</li>
-        <li class="coming">Long pause</li>
-      </ul>
+      <nav aria-label="Pomodoro cycles">
+        <ul class="pomodoro-list">
+          <li class="live">Focus</li>
+          <li class="coming">Break</li>
+          <li class="coming">Focus</li>
+          <li class="coming">Break</li>
+          <li class="coming">Focus</li>
+          <li class="coming">Break</li>
+          <li class="coming">Focus</li>
+          <li class="coming">Long break</li>
+        </ul>
+      </nav>
     </header>
     <main>
       <div class="timer">
-        <div class="countdown">
+        <div class="countdown" role="timer" aria-live="polite">
           <div class="time-section minutes">
             <div class="digit" id="minute-tens"><span>2</span></div>
             <div class="digit" id="minute-units"><span>5</span></div>
@@ -104,8 +111,8 @@
           </div>
         </div>
         <div class="controls">
-          <button id="start-btn" class="button button-primary">Start</button>
-          <button id="reset-btn" class="button button-secondary">Reset</button>
+          <button id="start-btn" class="button button-primary" aria-label="Start timer">Start</button>
+          <button id="reset-btn" class="button button-secondary" aria-label="Reset timer">Reset</button>
         </div>
       </div>
     </main>
@@ -117,6 +124,7 @@
             <img id="music-icon" class="music-icon" src="assets/Play-focus.png" alt="Music Control">
           </button>
         </div>
+
         <div class="right-controls">
           <button id="fullscreen-btn" class="fullscreen-control">
             <span id="fullscreen-status">Full Screen</span>
@@ -125,6 +133,11 @@
         </div>
       </div>
     </footer>
+    <div class="more-pomodoro">
+      <a href="more-pomodoro/index.html" aria-label="More Pomodoro section">
+        <h1>More Pomodoro</h1>
+      </a>
+    </div>
   </div>
   <script src="script.js"></script>
 </body>

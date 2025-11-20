@@ -14,23 +14,22 @@
       <priority>0.7</priority>
       <changefreq>monthly</changefreq>
    </url>
-   <!-- Enlaces a las canciones (opcional) -->
    <url>
-      <loc>https://uppbeat.io/t/adi-goldstein/i-dont-need-your-love</loc>
-      <lastmod>2024-11-19</lastmod>
-      <priority>0.3</priority>
-      <changefreq>never</changefreq>
-   </url>
-   <url>
-      <loc>https://uppbeat.io/t/jonny-easton/dream-bird</loc>
-      <lastmod>2024-11-19</lastmod>
-      <priority>0.3</priority>
-      <changefreq>never</changefreq>
-   </url>
-   <url>
-      <loc>https://uppbeat.io/t/pryces/lateflights</loc>
-      <lastmod>2024-11-19</lastmod>
-      <priority>0.3</priority>
-      <changefreq>never</changefreq>
-   </url>
+  <loc>https://www.lofipomodoro.com/more-pomodoro/</loc>
+  <lastmod>2025-07-01</lastmod>
+  <priority>0.8</priority>
+  <changefreq>weekly</changefreq>
+</url>
+<url>
+  <loc>https://www.lofipomodoro.com/more-pomodoro/faq.html</loc>
+  <lastmod>2025-07-01</lastmod>
+  <priority>0.6</priority>
+  <changefreq>monthly</changefreq>
+</url>
+<url>
+  <loc>https://www.lofipomodoro.com/more-pomodoro/blog</loc>
+  <lastmod>2025-07-01</lastmod>
+  <priority>0.6</priority>
+  <changefreq>monthly</changefreq>
+</url>
 </urlset>
