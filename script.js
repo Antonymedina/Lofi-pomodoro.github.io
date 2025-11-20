@@ -48,7 +48,24 @@ const songs = [
   'songs/song10.mp3',
   'songs/song11.mp3',
   'songs/song12.mp3',
-  'songs/song13.mp3'
+  'songs/song13.mp3',
+  'songs/song14.mp3',
+  'songs/song15.mp3',
+  'songs/song16.mp3',
+  'songs/song17.mp3',
+  'songs/song18.mp3',
+  'songs/song19.mp3',
+  'songs/song20.mp3',
+  'songs/song21.mp3',
+  'songs/song22.mp3',
+  'songs/song23.mp3',
+  'songs/song24.mp3',
+  'songs/song25.mp3',
+  'songs/song26.mp3',
+  'songs/song27.mp3',
+  'songs/song28.mp3',
+  'songs/song29.mp3',
+  'songs/song30.mp3'
 ];
 
 function shuffleSongs() {
@@ -410,6 +427,25 @@ function updateFullscreenIcon() {
 
   fullscreenIcon.src = `assets/${imageFilename}`;
   fullscreenStatus.textContent = document.fullscreenElement ? 'Exit Full Screen' : 'Full Screen';
+}
+
+function initNewsBanner() {
+  if (!newsBanner || !newsCloseButton) return;
+
+  const isClosed = localStorage.getItem('lp_v2_notice_closed') === 'true';
+
+  if (isClosed) {
+    newsBanner.style.display = 'none';
+    return;
+  }
+
+  newsBanner.classList.add('visible');
+
+  newsCloseButton.addEventListener('click', () => {
+    newsBanner.classList.remove('visible');
+    newsBanner.style.display = 'none';
+    localStorage.setItem('lp_v2_notice_closed', 'true');
+  });
 }
 
 // Listeners

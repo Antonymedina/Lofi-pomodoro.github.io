@@ -403,6 +403,70 @@ footer {
   transition: opacity 0.5s;
 }
 
+.lp-news-banner {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: none;
+  flex-direction: row;
+  gap: 12px;
+  padding: 18px 20px 18px 18px;
+  max-width: 280px;
+  background: var(--surface-action);
+  color: var(--text-contrast);
+  border-radius: 18px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.15);
+  z-index: 10;
+}
+
+.lp-news-banner.visible {
+  display: flex;
+}
+
+.lp-news-close {
+  align-self: flex-start;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-contrast);
+  font-size: var(--size-body-m);
+  font-weight: 700;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.lp-news-content {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-family: var(--font-body);
+}
+
+.lp-news-title {
+  margin: 0;
+  font-size: var(--size-body-l);
+  font-weight: 700;
+}
+
+.lp-news-subtitle {
+  margin: 0;
+  font-size: var(--size-body-s);
+  font-weight: 600;
+}
+
+.lp-news-list {
+  margin: 4px 0 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: var(--size-body-s);
+  font-weight: 600;
+}
+
 /* Media Queries */
 
 /* Tablets (pantallas entre 768px y 1024px) */
@@ -528,5 +592,11 @@ footer {
   }
   .right-controls {
     display: none;
+  }
+
+  .lp-news-banner {
+    bottom: 20px;
+    right: 20px;
+    max-width: 240px;
   }
 }
